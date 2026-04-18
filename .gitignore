@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Vector DB (important)
+backend/storage/vector_db/
+
+# Generated PDFs
+backend/storage/pdfs/
+
+# Cache
+.cache/
+
+# Streamlit
+.streamlit/
