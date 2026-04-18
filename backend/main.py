@@ -13,7 +13,7 @@ app = FastAPI(
 print("🚀 InsightTube Backend Starting...")
 
 # -----------------------------
-# CORS CONFIG
+# CORS CONFIGURATION
 # -----------------------------
 app.add_middleware(
     CORSMiddleware,
