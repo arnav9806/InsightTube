@@ -71,24 +71,48 @@ if True:
     with tab1:
         st.subheader("Generate Summary")
 
-        option = st.selectbox(
+        # Map UI → backend values
+        summary_options = {
+            "Short": "short",
+            "Detailed": "detailed",
+            "Key Takeaways": "key_takeaways"
+        }
+
+        selected_label = st.selectbox(
             "Choose summary type",
-            ["Short", "Detailed", "Key Takeaways"]
+            list(summary_options.keys())
         )
+
+        summary_type = summary_options[selected_label]
 
         if st.button("Generate Summary"):
             with st.spinner("Generating summary..."):
-                response = requests.post(
-                    f"{BACKEND_URL}/summary",
-                    json={"type": option}
-                )
-                if response.status_code == 200:
-                    result = response.json().get("result")
-                    st.session_state.summary[option] = result
+                try:
+                    response = requests.post(
+                        f"{BACKEND_URL}/summary",
+                        json={"type": summary_type}
+                    )
 
-        if option in st.session_state.summary:
-            st.write(st.session_state.summary[option])
+                    if response.status_code == 200:
+                        data = response.json()
 
+                        if data["status"] == "success":
+                            result = data.get("result")
+                            st.session_state.summary[selected_label] = result
+                            st.success("✅ Summary generated")
+                        else:
+                            st.error(data.get("message"))
+
+                    else:
+                        st.error("❌ Failed to generate summary")
+
+                except Exception as e:
+                    st.error(f"Error: {e}")
+
+        # Display stored summary
+        if selected_label in st.session_state.summary:
+            st.markdown("### 📄 Output")
+            st.write(st.session_state.summary[selected_label])
     # -------------------------
     # NOTES TAB
     # -------------------------

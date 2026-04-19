@@ -1,3 +1,4 @@
+from backend.services.summary_service import generate_video_summary
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.services.video_service import process_video_pipeline
@@ -81,17 +82,28 @@ def process_video(request: dict):
 def get_summary(request: dict):
     print("\n📥 /summary API called")
 
-    summary_type = request.get("type")
+    summary_type = request.get("type", "short")
+
     print(f"📝 Summary type: {summary_type}")
 
-    result = f"{summary_type} summary will be generated here..."
+    try:
+        result = generate_video_summary(summary_type)
 
-    print("✅ Summary generated")
+        print("✅ Summary generated")
 
-    return {
-        "status": "success",
-        "result": result
-    }
+        return {
+            "status": "success",
+            "type": summary_type,
+            "result": result
+        }
+
+    except Exception as e:
+        print(f"❌ Error: {e}")
+
+        return {
+            "status": "error",
+            "message": str(e)
+        }
 
 # -----------------------------
 # NOTES
