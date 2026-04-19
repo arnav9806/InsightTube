@@ -55,8 +55,8 @@ if st.button("🚀 Process Video"):
 # -----------------------------
 # MAIN FEATURES
 # -----------------------------
-if st.session_state.processed:
-# if True:
+# if st.session_state.processed:
+if True:
 
     tab1, tab2, tab3, tab4 = st.tabs([
         "📄 Summary",
